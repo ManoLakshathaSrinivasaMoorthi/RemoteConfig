@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,8 +56,7 @@ public class PhoneActivity extends AppCompatActivity {
                     ContextCompat.getColor(PhoneActivity.this, R.color.colorPrimaryDark);
             setButtonColor();
             setTextViewColors();
-           // setSearchViewColors();
-            setTextColor();
+            setSearchViewColors();
             binding.Constraintslayouts.setBackgroundColor(color);
 
 
@@ -68,14 +66,14 @@ public class PhoneActivity extends AppCompatActivity {
         //getSuperHeroes();
     }
 
-   /* private void setSearchViewColors() {
+    private void setSearchViewColors() {
         boolean isPromoOn = mFirebaseRemoteConfig.getBoolean(RemoteUtils.CONFIG_IS_PROMO_ON);
         int color = isPromoOn ? Color.parseColor(mFirebaseRemoteConfig.getString(RemoteUtils.CONFIG_COLOR_EDIT)) :
                 ContextCompat.getColor(PhoneActivity.this, R.color.colorText);
         int id = binding.search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
         TextView textView = (TextView) binding.search.findViewById(id);
         textView.setTextColor(Color.BLUE);
-    }*/
+    }
 
     private void Searchbars() {
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -104,16 +102,7 @@ public class PhoneActivity extends AppCompatActivity {
 
 
     }
-    private void setTextColor() {
-        boolean isPromoOn = true;
-        int color = isPromoOn ? Color.parseColor(mFirebaseRemoteConfig.getString(RemoteUtils.CONFIG_TEXT_COLOR)) :
-                ContextCompat.getColor(this, R.color.colorText);
-        View V = new View(this);
 
-
-        VehiclesAdapter.ViewHolder holder=new VehiclesAdapter.ViewHolder(V);
-        holder.name.setTextColor(color);
-    }
     private void setTextViewColors() {
         boolean isPromoOn = mFirebaseRemoteConfig.getBoolean(RemoteUtils.CONFIG_IS_PROMO_ON);
         int color = isPromoOn ? Color.parseColor(mFirebaseRemoteConfig.getString(RemoteUtils.CONFIG_TEXT_COLOR)) :
