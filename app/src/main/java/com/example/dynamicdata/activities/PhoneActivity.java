@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,9 +46,7 @@ public class PhoneActivity extends AppCompatActivity {
 
         mFirebaseRemoteConfig=FirebaseRemoteConfig.getInstance();
         HashMap<String,Object> map=new HashMap<>();
-        FirebaseRemoteConfigSettings configSettings= new FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(1000)
-                .build();
+        FirebaseRemoteConfigSettings configSettings= new FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(1000).build();
         mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
         mFirebaseRemoteConfig.setDefaultsAsync(map);
         mFirebaseRemoteConfig.fetchAndActivate().addOnCompleteListener(task -> getSuperHeroes());
@@ -57,6 +56,7 @@ public class PhoneActivity extends AppCompatActivity {
                     ContextCompat.getColor(PhoneActivity.this, R.color.colorPrimaryDark);
             setButtonColor();
             setTextViewColors();
+            setSearchViewColors();
             binding.Constraintslayouts.setBackgroundColor(color);
 
 
@@ -64,6 +64,15 @@ public class PhoneActivity extends AppCompatActivity {
         });
 
         //getSuperHeroes();
+    }
+
+    private void setSearchViewColors() {
+        boolean isPromoOn = mFirebaseRemoteConfig.getBoolean(RemoteUtils.CONFIG_IS_PROMO_ON);
+        int color = isPromoOn ? Color.parseColor(mFirebaseRemoteConfig.getString(RemoteUtils.CONFIG_COLOR_EDIT)) :
+                ContextCompat.getColor(PhoneActivity.this, R.color.colorText);
+        int id = binding.search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        TextView textView = (TextView) binding.search.findViewById(id);
+        textView.setTextColor(Color.BLUE);
     }
 
     private void Searchbars() {

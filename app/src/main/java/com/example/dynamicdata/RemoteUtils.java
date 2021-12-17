@@ -11,4 +11,5 @@ public class RemoteUtils {
     public static final String CONFIG_BUTTON_COLOR ="button_color" ;
     public static final String CONFIG_TEXT_COLOR = "text_color";
     private static final String CONFIG_COLOR_count = "bodycolor";
+   public static final String CONFIG_COLOR_EDIT="edit_color";
 }
