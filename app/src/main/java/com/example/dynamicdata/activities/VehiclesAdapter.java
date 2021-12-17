@@ -1,8 +1,5 @@
 package com.example.dynamicdata.activities;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dynamicdata.R;
-import com.example.dynamicdata.RemoteUtils;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +21,7 @@ public class VehiclesAdapter extends RecyclerView.Adapter<VehiclesAdapter.ViewHo
 
     List<Vehicles> vehiclesList;
     List<Vehicles> vehiclesFilterList;
-    private VehicleRecyclerListener vehiclesRecyclerListener;
+    private final VehicleRecyclerListener vehiclesRecyclerListener;
 
     public VehiclesAdapter(VehicleRecyclerListener RecyclerListener,List<Vehicles> vehiclesList) {
 
@@ -35,8 +30,7 @@ public class VehiclesAdapter extends RecyclerView.Adapter<VehiclesAdapter.ViewHo
         this.vehiclesRecyclerListener=RecyclerListener;
     }
 
-    public VehiclesAdapter(VehicleRecyclerListener recyclerListener) {
-    }
+
 
     @NonNull
     @Override
@@ -51,15 +45,8 @@ public class VehiclesAdapter extends RecyclerView.Adapter<VehiclesAdapter.ViewHo
     public void onBindViewHolder(@NonNull VehiclesAdapter.ViewHolder holder, int position) {
        Vehicles vehicles=vehiclesFilterList.get(position);
         holder.name.setText(vehicles.getNome());
+        holder.itemView.setOnClickListener(view -> vehiclesRecyclerListener.onItemSelected(vehicles));
 
-
-         holder.layout.setOnClickListener(view -> {
-           /*  Intent intent= new Intent(context,DetailedActivity.class);
-             intent.putExtra(Constants.SharedPreference.Vname,vehicles.getNome());
-             intent.putExtra(Constants.SharedPreference.VCardigo,vehicles.getCodigo());
-             context.startActivity(intent);*/
-
-         });
     }
 
     @Override

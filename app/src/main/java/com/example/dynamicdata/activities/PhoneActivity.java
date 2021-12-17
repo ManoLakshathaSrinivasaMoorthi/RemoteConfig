@@ -120,16 +120,12 @@ public class PhoneActivity extends AppCompatActivity {
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
                 binding.listItem.setLayoutManager(layoutManager);
                adapter = new VehiclesAdapter(
-                        new VehiclesAdapter.VehicleRecyclerListener() {
-                            @Override
-                            public void onItemSelected(Vehicles vehicles) {
-                           ;
-                                Intent intent= new Intent(PhoneActivity.this,DetailedActivity.class);
-                                intent.putExtra(Constants.SharedPreference.Vname,vehicles.getNome());
-                                intent.putExtra(Constants.SharedPreference.VCardigo,vehicles.getCodigo());
-                                startActivity(intent);
-                            }
-                        },response.body());
+                       vehicles -> {
+                           Intent intent= new Intent(PhoneActivity.this,DetailedActivity.class);
+                           intent.putExtra(Constants.SharedPreference.Vname,vehicles.getNome());
+                           intent.putExtra(Constants.SharedPreference.VCardigo,vehicles.getCodigo());
+                           startActivity(intent);
+                       },response.body());
 
                binding.listItem.setAdapter(adapter);
 
