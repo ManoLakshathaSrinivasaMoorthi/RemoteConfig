@@ -72,7 +72,7 @@ public class PhoneActivity extends AppCompatActivity {
                 ContextCompat.getColor(PhoneActivity.this, R.color.colorText);
         int id = binding.search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
         TextView textView = (TextView) binding.search.findViewById(id);
-        textView.setTextColor(color);
+        textView.setTextColor(Color.BLUE);
     }
 
     private void Searchbars() {
