@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">DynamicData</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="title_signup">Quick Signup</string>
+
+    <string name="prompt_signup">Please complete this quick signup</string>
+
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_email">Email Address</string>
+    <string name="hint_phone">Phone Number</string>
+    <string name="hint_promo_code">Enter Promo Code</string>
+
+    <string name="button_signup">Sign Up!</string>
+    <string name="toast_sign_up">Now signing you up</string>
+
+    <string name="error_short_password">Password should be more than %1$d characters</string>
+
+
+    <string name="config_signup_prompt">You idiot. Don\'t be stupid. Sign up!</string>
+    <integer name="config_min_password_len">5</integer>
+    <bool name="config_promo_on">false</bool>
+    <string name="config_color_pry">#3F51B5</string>
+    <string name="config_color_pry_dark">#303F9F</string>
+    <string name="color_background">#FFFF</string>
+    <string name="color_accent">#080555</string>
+    <string name="click_update_to_see_remote_config_changes">Click Update to see Remote Config changes</string>
+    <string name="update">Update</string>
+</resources>
