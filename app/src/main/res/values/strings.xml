@@ -27,4 +27,5 @@
     <string name="color_accent">#080555</string>
     <string name="click_update_to_see_remote_config_changes">Click Update to see Remote Config changes</string>
     <string name="update">Update</string>
+    <string name="search">Search Content</string>
 </resources>

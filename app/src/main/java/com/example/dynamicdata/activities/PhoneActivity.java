@@ -1,5 +1,8 @@
 package com.example.dynamicdata.activities;
 
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,10 +34,14 @@ public class PhoneActivity extends AppCompatActivity {
 
     FirebaseRemoteConfig mFirebaseRemoteConfig;
     private ActivityPhoneBinding binding;
+    VehiclesAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        binding= DataBindingUtil.setContentView(this,R.layout.activity_phone);
+
+
+       Searchbars();
 
         mFirebaseRemoteConfig=FirebaseRemoteConfig.getInstance();
         HashMap<String,Object> map=new HashMap<>();
@@ -56,6 +64,34 @@ public class PhoneActivity extends AppCompatActivity {
         });
 
         //getSuperHeroes();
+    }
+
+    private void Searchbars() {
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        binding.search.setActivated(true);
+        binding.search.setQueryHint(getResources().getString(R.string.search));
+        binding.search.onActionViewExpanded();
+        binding.search.setIconified(false);
+        binding.search.clearFocus();
+        binding.search.setSearchableInfo(searchManager
+                .getSearchableInfo(getComponentName()));
+        binding.search.setMaxWidth(Integer.MAX_VALUE);
+
+        binding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                adapter.getFilter().filter(query);
+                return false;
+            }
+        });
+
+
     }
 
     private void setTextViewColors() {
@@ -83,13 +119,17 @@ public class PhoneActivity extends AppCompatActivity {
                 binding.listItem.setHasFixedSize(true);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
                 binding.listItem.setLayoutManager(layoutManager);
-                VehiclesAdapter adapter= new VehiclesAdapter(
+               adapter = new VehiclesAdapter(
                         new VehiclesAdapter.VehicleRecyclerListener() {
                             @Override
                             public void onItemSelected(Vehicles vehicles) {
                            ;
+                                Intent intent= new Intent(PhoneActivity.this,DetailedActivity.class);
+                                intent.putExtra(Constants.SharedPreference.Vname,vehicles.getNome());
+                                intent.putExtra(Constants.SharedPreference.VCardigo,vehicles.getCodigo());
+                                startActivity(intent);
                             }
-                        });
+                        },response.body());
 
                binding.listItem.setAdapter(adapter);
 

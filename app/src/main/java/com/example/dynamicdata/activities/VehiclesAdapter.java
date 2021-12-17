@@ -18,19 +18,20 @@ import com.example.dynamicdata.R;
 import com.example.dynamicdata.RemoteUtils;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VehiclesAdapter extends RecyclerView.Adapter<VehiclesAdapter.ViewHolder>implements Filterable {
 
-   // Context context;
+
     List<Vehicles> vehiclesList;
-   // private final FirebaseRemoteConfig configs;
+    List<Vehicles> vehiclesFilterList;
     private VehicleRecyclerListener vehiclesRecyclerListener;
 
     public VehiclesAdapter(VehicleRecyclerListener RecyclerListener,List<Vehicles> vehiclesList) {
-        //this.context = context;
+
         this.vehiclesList = vehiclesList;
-       // this.configs = configs;
+        this.vehiclesFilterList = vehiclesList;
         this.vehiclesRecyclerListener=RecyclerListener;
     }
 
@@ -48,7 +49,7 @@ public class VehiclesAdapter extends RecyclerView.Adapter<VehiclesAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull VehiclesAdapter.ViewHolder holder, int position) {
-       Vehicles vehicles=vehiclesList.get(position);
+       Vehicles vehicles=vehiclesFilterList.get(position);
         holder.name.setText(vehicles.getNome());
 
 
@@ -63,14 +64,42 @@ public class VehiclesAdapter extends RecyclerView.Adapter<VehiclesAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return vehiclesList.size();
+        return vehiclesFilterList.size();
     }
 
     @Override
     public Filter getFilter() {
-        return null;
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charString = constraint.toString();
+                if (charString.isEmpty()) {
+                    vehiclesFilterList = vehiclesList;
+                } else {
+                    List<Vehicles> filteredList = new ArrayList<>();
+                    for (Vehicles vehicles : vehiclesList) {
+                        if (vehicles.getNome().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(vehicles);
+                        }
+                    }
+                    vehiclesFilterList = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = vehiclesFilterList;
+                return filterResults;
+
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                vehiclesFilterList = (ArrayList<Vehicles>) results.values;
+                notifyDataSetChanged();
+            }
+
+        };
     }
-    public static interface VehicleRecyclerListener {
+    public interface VehicleRecyclerListener {
         void onItemSelected(Vehicles vehicles);
     }
 
