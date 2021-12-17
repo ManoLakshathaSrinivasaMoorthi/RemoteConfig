@@ -45,9 +45,7 @@ public class PhoneActivity extends AppCompatActivity {
 
         mFirebaseRemoteConfig=FirebaseRemoteConfig.getInstance();
         HashMap<String,Object> map=new HashMap<>();
-        FirebaseRemoteConfigSettings configSettings= new FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(1000)
-                .build();
+        FirebaseRemoteConfigSettings configSettings= new FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(1000).build();
         mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
         mFirebaseRemoteConfig.setDefaultsAsync(map);
         mFirebaseRemoteConfig.fetchAndActivate().addOnCompleteListener(task -> getSuperHeroes());
