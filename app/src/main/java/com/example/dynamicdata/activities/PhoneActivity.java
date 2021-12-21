@@ -1,5 +1,6 @@
 package com.example.dynamicdata.activities;
 
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -53,10 +54,11 @@ public class PhoneActivity extends AppCompatActivity {
         binding.refreshBtn.setOnClickListener(view -> {
             boolean isPromoOn = mFirebaseRemoteConfig.getBoolean(RemoteUtils.CONFIG_IS_PROMO_ON);
             int color = isPromoOn ? Color.parseColor(mFirebaseRemoteConfig.getString(RemoteUtils.CONFIG_COLOR_PRY)) :
-                    ContextCompat.getColor(PhoneActivity.this, R.color.colorPrimaryDark);
+                    ContextCompat.getColor(PhoneActivity.this, R.color.black);
             setButtonColor();
             setTextViewColors();
-            setSearchViewColors();
+           // setSearchViewColors();
+            setImageColor();
             binding.Constraintslayouts.setBackgroundColor(color);
 
 
@@ -64,6 +66,12 @@ public class PhoneActivity extends AppCompatActivity {
         });
 
         //getSuperHeroes();
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private void setImageColor() {
+        binding.cameraImgs.setBackgroundDrawable(getDrawable(R.drawable.uncheck));
+       // binding.cameraImgs.setBackgroundColor(getResources().getColor(R.color.colorText));
     }
 
     private void setSearchViewColors() {
@@ -79,6 +87,7 @@ public class PhoneActivity extends AppCompatActivity {
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         binding.search.setActivated(true);
         binding.search.setQueryHint(getResources().getString(R.string.search));
+
         binding.search.onActionViewExpanded();
         binding.search.setIconified(false);
         binding.search.clearFocus();

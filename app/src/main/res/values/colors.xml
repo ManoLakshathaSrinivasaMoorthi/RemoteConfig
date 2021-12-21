@@ -12,4 +12,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorButton">#C11B17</color>
     <color name="colorText">#FFFF00</color>
+    <color name="btn_bg">#9B51E0</color>
 </resources>

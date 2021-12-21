@@ -1,5 +1,6 @@
 package com.example.dynamicdata.activities;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dynamicdata.R;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +23,8 @@ public class VehiclesAdapter extends RecyclerView.Adapter<VehiclesAdapter.ViewHo
 
     List<Vehicles> vehiclesList;
     List<Vehicles> vehiclesFilterList;
-    private VehicleRecyclerListener vehiclesRecyclerListener;
-
+    private final VehicleRecyclerListener vehiclesRecyclerListener;
+    private FirebaseRemoteConfig config;
     public VehiclesAdapter(VehicleRecyclerListener RecyclerListener,List<Vehicles> vehiclesList) {
 
         this.vehiclesList = vehiclesList;
@@ -48,8 +50,8 @@ public class VehiclesAdapter extends RecyclerView.Adapter<VehiclesAdapter.ViewHo
     public void onBindViewHolder(@NonNull VehiclesAdapter.ViewHolder holder, int position) {
        Vehicles vehicles=vehiclesFilterList.get(position);
         holder.name.setText(vehicles.getNome());
-        holder.itemView.setOnClickListener(view -> vehiclesRecyclerListener.onItemSelected(vehicles));
 
+        holder.itemView.setOnClickListener(view -> vehiclesRecyclerListener.onItemSelected(vehicles));
     }
 
     @Override
