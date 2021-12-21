@@ -21,7 +21,7 @@ public class VehiclesAdapter extends RecyclerView.Adapter<VehiclesAdapter.ViewHo
 
     List<Vehicles> vehiclesList;
     List<Vehicles> vehiclesFilterList;
-    private final VehicleRecyclerListener vehiclesRecyclerListener;
+    private VehicleRecyclerListener vehiclesRecyclerListener;
 
     public VehiclesAdapter(VehicleRecyclerListener RecyclerListener,List<Vehicles> vehiclesList) {
 
@@ -30,6 +30,9 @@ public class VehiclesAdapter extends RecyclerView.Adapter<VehiclesAdapter.ViewHo
         this.vehiclesRecyclerListener=RecyclerListener;
     }
 
+    public VehiclesAdapter() {
+
+    }
 
 
     @NonNull
