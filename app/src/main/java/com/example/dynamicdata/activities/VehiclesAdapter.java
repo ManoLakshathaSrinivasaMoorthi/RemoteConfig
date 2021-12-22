@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dynamicdata.R;
+import com.example.dynamicdata.RemoteUtils;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import java.util.ArrayList;
@@ -24,17 +25,17 @@ public class VehiclesAdapter extends RecyclerView.Adapter<VehiclesAdapter.ViewHo
     List<Vehicles> vehiclesList;
     List<Vehicles> vehiclesFilterList;
     private final VehicleRecyclerListener vehiclesRecyclerListener;
+
     private FirebaseRemoteConfig config;
-    public VehiclesAdapter(VehicleRecyclerListener RecyclerListener,List<Vehicles> vehiclesList) {
+    public VehiclesAdapter(VehicleRecyclerListener RecyclerListener, List<Vehicles> vehiclesList, FirebaseRemoteConfig config) {
 
         this.vehiclesList = vehiclesList;
         this.vehiclesFilterList = vehiclesList;
         this.vehiclesRecyclerListener=RecyclerListener;
+        this.config = config;
     }
 
-    public VehiclesAdapter() {
 
-    }
 
 
     @NonNull
@@ -49,9 +50,16 @@ public class VehiclesAdapter extends RecyclerView.Adapter<VehiclesAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull VehiclesAdapter.ViewHolder holder, int position) {
        Vehicles vehicles=vehiclesFilterList.get(position);
-        holder.name.setText(vehicles.getNome());
 
+        holder.name.setText(vehicles.getNome());
         holder.itemView.setOnClickListener(view -> vehiclesRecyclerListener.onItemSelected(vehicles));
+        holder.itemView.setBackgroundColor(Color.BLUE);
+        if (config.getBoolean(RemoteUtils.CONFIG_IS_PROMO_ON)){
+
+            holder.name.setTextColor(Color.YELLOW);
+            holder.layout.setBackgroundColor(Color.BLACK);
+        }
+        notifyDataSetChanged();
     }
 
     @Override

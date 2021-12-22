@@ -32,7 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PhoneActivity extends AppCompatActivity {
+public class PhoneActivity extends AppCompatActivity  {
 
     FirebaseRemoteConfig mFirebaseRemoteConfig;
     private ActivityPhoneBinding binding;
@@ -117,6 +117,11 @@ public class PhoneActivity extends AppCompatActivity {
         int color = isPromoOn ? Color.parseColor(mFirebaseRemoteConfig.getString(RemoteUtils.CONFIG_TEXT_COLOR)) :
                 ContextCompat.getColor(PhoneActivity.this, R.color.colorText);
         binding.Headlines.setTextColor(color);
+       // VehiclesAdapter.ViewHolder viewHolder=adapter.onCreateViewHolder(null,1);
+      //  assert viewHolder != null;
+     //   viewHolder.name.setTextColor(getResources().getColor(R.color.colorText));
+     //   viewHolder.layout.setBackgroundColor(getResources().getColor(R.color.black));
+
     }
 
     private void setButtonColor() {
@@ -138,16 +143,18 @@ public class PhoneActivity extends AppCompatActivity {
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
                 binding.listItem.setLayoutManager(layoutManager);
                adapter = new VehiclesAdapter(
-                       vehicles -> {
-                           Intent intent= new Intent(PhoneActivity.this,DetailedActivity.class);
-                           intent.putExtra(Constants.SharedPreference.Vname,vehicles.getNome());
-                           intent.putExtra(Constants.SharedPreference.VCardigo,vehicles.getCodigo());
-                           startActivity(intent);
-                       },response.body());
+                       new VehiclesAdapter.VehicleRecyclerListener() {
+                           @Override
+                           public void onItemSelected(Vehicles vehicles) {
+                               Intent intent= new Intent(PhoneActivity.this,DetailedActivity.class);
+                               intent.putExtra(Constants.SharedPreference.Vname,vehicles.getNome());
+                               intent.putExtra(Constants.SharedPreference.VCardigo,vehicles.getCodigo());
+                               startActivity(intent);
+                           }}
+                           ,response.body(), mFirebaseRemoteConfig);
 
                binding.listItem.setAdapter(adapter);
-
-
+                // adapter.notifyDataSetChanged();
 
             }
 
@@ -158,4 +165,6 @@ public class PhoneActivity extends AppCompatActivity {
 
         });
     }
+
+
 }
