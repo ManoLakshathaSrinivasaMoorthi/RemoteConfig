@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +39,7 @@ public class PhoneActivity extends AppCompatActivity  {
     FirebaseRemoteConfig mFirebaseRemoteConfig;
     private ActivityPhoneBinding binding;
     VehiclesAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,14 +55,15 @@ public class PhoneActivity extends AppCompatActivity  {
         mFirebaseRemoteConfig.setDefaultsAsync(map);
         mFirebaseRemoteConfig.fetchAndActivate().addOnCompleteListener(task -> getSuperHeroes());
         binding.refreshBtn.setOnClickListener(view -> {
-            boolean isPromoOn = mFirebaseRemoteConfig.getBoolean(RemoteUtils.CONFIG_IS_PROMO_ON);
-            int color = isPromoOn ? Color.parseColor(mFirebaseRemoteConfig.getString(RemoteUtils.CONFIG_COLOR_PRY)) :
-                    ContextCompat.getColor(PhoneActivity.this, R.color.black);
+           boolean isPromoOn = mFirebaseRemoteConfig.getBoolean(RemoteUtils.CONFIG_IS_PROMO_ON);
+           int color = isPromoOn ? Color.parseColor(mFirebaseRemoteConfig.getString(RemoteUtils.CONFIG_COLOR_PRY)) :
+                   ContextCompat.getColor(PhoneActivity.this, R.color.black);
             setButtonColor();
             setTextViewColors();
            // setSearchViewColors();
             setImageColor();
-            binding.Constraintslayouts.setBackgroundColor(color);
+           // getAdapterColors();
+           binding.Constraintslayouts.setBackgroundColor(color);
 
 
 
@@ -67,6 +71,15 @@ public class PhoneActivity extends AppCompatActivity  {
 
         //getSuperHeroes();
     }
+
+  /*  private void getAdapterColors() {
+        ViewGroup view = (ViewGroup) getWindow().getDecorView().getRootView();
+        view= (ViewGroup) LayoutInflater.from(getApplicationContext()).inflate(R.layout.list_view,view,false);
+        VehiclesAdapter.ViewHolder viewHolder=adapter.onCreateViewHolder( view,R.color.colorText);
+        viewHolder.name.setTextColor(getResources().getColor(R.color.colorText));
+        viewHolder.layout.setBackgroundColor(getResources().getColor(R.color.black));
+
+    }*/
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void setImageColor() {
@@ -79,7 +92,7 @@ public class PhoneActivity extends AppCompatActivity  {
         int color = isPromoOn ? Color.parseColor(mFirebaseRemoteConfig.getString(RemoteUtils.CONFIG_COLOR_EDIT)) :
                 ContextCompat.getColor(PhoneActivity.this, R.color.colorText);
         int id = binding.search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
-        TextView textView = (TextView) binding.search.findViewById(id);
+        TextView textView = binding.search.findViewById(id);
         textView.setTextColor(Color.BLUE);
     }
 
@@ -117,10 +130,7 @@ public class PhoneActivity extends AppCompatActivity  {
         int color = isPromoOn ? Color.parseColor(mFirebaseRemoteConfig.getString(RemoteUtils.CONFIG_TEXT_COLOR)) :
                 ContextCompat.getColor(PhoneActivity.this, R.color.colorText);
         binding.Headlines.setTextColor(color);
-       // VehiclesAdapter.ViewHolder viewHolder=adapter.onCreateViewHolder(null,1);
-      //  assert viewHolder != null;
-     //   viewHolder.name.setTextColor(getResources().getColor(R.color.colorText));
-     //   viewHolder.layout.setBackgroundColor(getResources().getColor(R.color.black));
+
 
     }
 
@@ -143,15 +153,13 @@ public class PhoneActivity extends AppCompatActivity  {
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
                 binding.listItem.setLayoutManager(layoutManager);
                adapter = new VehiclesAdapter(
-                       new VehiclesAdapter.VehicleRecyclerListener() {
-                           @Override
-                           public void onItemSelected(Vehicles vehicles) {
-                               Intent intent= new Intent(PhoneActivity.this,DetailedActivity.class);
-                               intent.putExtra(Constants.SharedPreference.Vname,vehicles.getNome());
-                               intent.putExtra(Constants.SharedPreference.VCardigo,vehicles.getCodigo());
-                               startActivity(intent);
-                           }}
-                           ,response.body(), mFirebaseRemoteConfig);
+                       vehicles -> {
+                           Intent intent= new Intent(PhoneActivity.this,DetailedActivity.class);
+                           intent.putExtra(Constants.SharedPreference.Vname,vehicles.getNome());
+                           intent.putExtra(Constants.SharedPreference.VCardigo,vehicles.getCodigo());
+                           startActivity(intent);
+                       }
+                       ,response.body(), mFirebaseRemoteConfig);
 
                binding.listItem.setAdapter(adapter);
                 // adapter.notifyDataSetChanged();

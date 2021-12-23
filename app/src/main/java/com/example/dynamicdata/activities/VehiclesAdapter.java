@@ -1,5 +1,6 @@
 package com.example.dynamicdata.activities;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +9,12 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dynamicdata.R;
-import com.example.dynamicdata.RemoteUtils;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import java.util.ArrayList;
@@ -25,13 +26,15 @@ public class VehiclesAdapter extends RecyclerView.Adapter<VehiclesAdapter.ViewHo
     List<Vehicles> vehiclesList;
     List<Vehicles> vehiclesFilterList;
     private final VehicleRecyclerListener vehiclesRecyclerListener;
+    int index = -1;
 
     private FirebaseRemoteConfig config;
-    public VehiclesAdapter(VehicleRecyclerListener RecyclerListener, List<Vehicles> vehiclesList, FirebaseRemoteConfig config) {
+    public VehiclesAdapter(VehicleRecyclerListener RecyclerListener, List<Vehicles> vehiclesList,  FirebaseRemoteConfig config) {
 
         this.vehiclesList = vehiclesList;
         this.vehiclesFilterList = vehiclesList;
         this.vehiclesRecyclerListener=RecyclerListener;
+
         this.config = config;
     }
 
@@ -48,18 +51,26 @@ public class VehiclesAdapter extends RecyclerView.Adapter<VehiclesAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VehiclesAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull VehiclesAdapter.ViewHolder holder, @SuppressLint("RecyclerView") final  int position) {
        Vehicles vehicles=vehiclesFilterList.get(position);
 
         holder.name.setText(vehicles.getNome());
         holder.itemView.setOnClickListener(view -> vehiclesRecyclerListener.onItemSelected(vehicles));
-        holder.itemView.setBackgroundColor(Color.BLUE);
-        if (config.getBoolean(RemoteUtils.CONFIG_IS_PROMO_ON)){
 
-            holder.name.setTextColor(Color.YELLOW);
-            holder.layout.setBackgroundColor(Color.BLACK);
+        holder.name.setOnClickListener(v -> {
+            index = position;
+            notifyDataSetChanged();
+
+        });
+        if(index==position){
+            holder.layout.setBackgroundColor(Color.parseColor("#080555"));
+            holder.name.setTextColor(Color.parseColor("#FFFFFF"));
+
+        }else{
+            holder.layout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            holder.name.setTextColor(Color.parseColor("#080555"));
         }
-        notifyDataSetChanged();
+
     }
 
     @Override
@@ -101,6 +112,9 @@ public class VehiclesAdapter extends RecyclerView.Adapter<VehiclesAdapter.ViewHo
     }
     public interface VehicleRecyclerListener {
         void onItemSelected(Vehicles vehicles);
+    }
+    public interface AdapterColrfunction{
+        void onItemClicked(Vehicles vehicles,int position);
     }
 
 
