@@ -9,7 +9,6 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -113,9 +112,7 @@ public class VehiclesAdapter extends RecyclerView.Adapter<VehiclesAdapter.ViewHo
     public interface VehicleRecyclerListener {
         void onItemSelected(Vehicles vehicles);
     }
-    public interface AdapterColrfunction{
-        void onItemClicked(Vehicles vehicles,int position);
-    }
+
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
